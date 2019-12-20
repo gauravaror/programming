@@ -5,9 +5,10 @@
 
 using namespace std;
 
-int get_freq_rep(int array[], int length, int string_rep) {
+string get_freq_rep(int array[], int length) {
+    string string_rep = "";
     for (int j=0;j < length;j++) {
-	string_rep = 79*string_rep +  array[j];
+	string_rep = string_rep +  to_string(array[j]);
     }
     return string_rep;
 }
@@ -107,9 +108,10 @@ int testcases;
 int L,N,A,B,C,D;
 char s1,s2;
 cin>>testcases;
+set<string> dictionary;
 set<int>::iterator len_it;
-unordered_map<int, int> oc_dictionary;
-unordered_map<int, unordered_map<int, int>> length_container;
+unordered_map<string, int> oc_dictionary;
+unordered_map<int, unordered_map<string, int>> length_container;
 set<int> lengths;
 	for (int i =0;i<testcases;i++) {
 	    cin>>L;
@@ -125,15 +127,16 @@ set<int> lengths;
 		    for (int i = 0; i< str_len; i++) {
 			    freq_vector[new_word[i]-97] += 1;
 		    }
-		    int representation = get_freq_rep(freq_vector, 26, first + 79*last);
+		    string representation = get_freq_rep(freq_vector, 26) + first + last;
 		    //cout<<"Input length"<< str_len<<" input represenation "<<representation<<" new word "<<new_word<<endl;
 		    lengths.insert(str_len);
 		    if (length_container.find(str_len) != length_container.end()) {
 		        oc_dictionary = length_container[str_len];
 		    } else {
-			unordered_map<int, int> new_map;
+			unordered_map<string, int> new_map;
 			oc_dictionary = new_map;
 		    }
+		    dictionary.insert(representation);
 		    if (oc_dictionary.find(representation) != oc_dictionary.end()) {
 			    oc_dictionary[representation] += 1;
 		    } else {
@@ -151,7 +154,7 @@ set<int> lengths;
 	    int current_length = *len_it;
 	    //cout<<"Current length "<<current_length<<endl;
 	    int fvector[26] = {};
-	    int freq_rep;
+	    string freq_rep;
 	    int run_max=N-current_length+1;
 	   oc_dictionary = length_container[current_length];
 	   //cout<<"This length dictionary size"<<oc_dictionary.size()<<endl;
@@ -164,13 +167,13 @@ set<int> lengths;
 		        for (int i = 0; i< str_len; i++) {
 			    fvector[new_string[i]-97] += 1;
 		        }
-		    	freq_rep = get_freq_rep(fvector, 26, first + 79*last);
+		    	freq_rep = get_freq_rep(fvector, 26) + first + last;
 		    } else {
 			int remove = prof_string.at(i-1) - 97;
 			int add = prof_string.at(i+current_length-1) - 97;
 			fvector[remove] -= 1;
 			fvector[add] += 1;
-			freq_rep = get_freq_rep(fvector,26, prof_string.at(i) + 79*prof_string.at(i+current_length-1));
+			freq_rep = get_freq_rep(fvector,26) + prof_string.at(i) + prof_string.at(i+current_length-1);
 		    }
 		    auto elmfound = oc_dictionary.find(freq_rep);
 		    //cout<<"Checkinf Represenation"<<freq_rep<<endl;
@@ -185,3 +188,4 @@ set<int> lengths;
 	cout<<"Case #"<<i+1<<": "<<found_elements<<endl;
 	}
 }
+
