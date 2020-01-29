@@ -33,7 +33,7 @@ public:
 
 int main() {
     Solution sol = Solution();
-    vi aa = {1,2,3};
+    vi aa = {1,2,2};
     auto ans = sol.subsets(aa);
     for (auto i:ans) {
 	for (auto j: i) {
