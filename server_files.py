@@ -10,28 +10,23 @@ def serverFile(rows, cols, grid):
 
     def dfs(r, c):
         this_iter[(r,c)] = 1
-        #print("Starting", r,c, seen)
+        print("Starting", r,c)
         if (r,c) in seen:
             return seen[(r,c)]
         current_min = float('inf')
         for col in adjacent(r,c):
-            print("Columns ", col)
+            print("Columns ", r,c,col)
             if (col[0], col[1]) in this_iter:
                 continue
             if (col[0], col[1]) in seen:
-                this_distance = seen[(col[0], col[1])]
-                if current_min > this_distance:
-                    current_min = this_distance
+                this_distance = 1 + seen[(col[0], col[1])]
             elif grid[col[0]][col[1]] == 0:
                 this_distance =  1 + dfs(col[0], col[1])
-                if current_min > this_distance:
-                    current_min = this_distance
             else:
-                seen[(r,c)] = 1
-                return  1
+                this_distance =  1
+            if current_min > this_distance:
+                current_min = this_distance
             print(r, c, current_min)
-        if current_min != float('inf'):
-            seen[(r,c)] = current_min
         del this_iter[(r,c)]
         return current_min
 
@@ -43,6 +38,7 @@ def serverFile(rows, cols, grid):
             this_iter[(i,j)] = 1
             if (i,j) not in seen and grid[i][j] == 0:
                 this_d = dfs(i, j)
+                seen[(i,j)] = this_d
                 if this_d > current_maximum:
                     current_maximum = this_d
     print(seen)
