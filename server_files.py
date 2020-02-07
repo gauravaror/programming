@@ -27,11 +27,12 @@ def serverFile(rows, cols, grid):
                 if current_min > this_distance:
                     current_min = this_distance
             else:
+                seen[(r,c)] = 1
                 return  1
             print(r, c, current_min)
         if current_min != float('inf'):
             seen[(r,c)] = current_min
-        #del this_iter[(r,c)]
+        del this_iter[(r,c)]
         return current_min
 
 
