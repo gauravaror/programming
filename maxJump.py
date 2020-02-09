@@ -1,26 +1,32 @@
 from typing import List
 class Solution:
     def maxJumps(self, arr: List[int], d: int) -> int:
-        def get_valid_neig(index):
+        dp = [-1]*len(arr)
+        def get_valid_neig(index, skip_pos=False):
             doing_pos = True
             doing_neg = True
             for i in range(1, d+1):
                 if doing_pos and index + i < len(arr):
-                    if arr[index+i]< arr[index]:
+                    if skip_pos:
+                        if dp[index+i] == -1:
+                            yield -2
+                    if arr[index+i] < arr[index]:
                         yield index + i
                     else:
                         doing_pos = False
                 if doing_neg and index - i >= 0:
+                    if skip_pos:
+                        if dp[index-i] == -1:
+                            yield -2
                     if arr[index-i] < arr[index]:
                         yield index - i
                     else:
                         doing_neg = False
             yield -1
         #print("This is stat")
-        dp = [-1]*len(arr)
         for i in range(len(arr)):
             #print(i)
-            if next(get_valid_neig(i)) == -1:
+            if next(get_valid_neig(i, True)) == -1:
                 dp[i] = 1
         print(dp)
         while True:
@@ -34,6 +40,10 @@ class Solution:
                 for j in get_valid_neig(i):
                     if j == -1:
                         continue
+                    if j == -2:
+                        all_done = False
+                        all_calc = False
+                        break
                     #print("Checking ", j, dp[j], max_jumps)
                     if dp[j] == -1:
                         #print(i, j)
