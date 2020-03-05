@@ -19,17 +19,17 @@ class Solution:
             yr1, m1, d1 = int(yra2), int(ma2), int(da2)
             yr2, m2, d2 = int(yra1), int(ma1), int(da1)
         days = 0
-        day_months = {1: 31, 2: 28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31,9:30, 10:31, 11:30, 12:31}
+        day_months = {1: 31, 2: 28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
         def isLeapYear(year):
-            if ((i % 4 == 0) and (i%100 != 0)) or (i%400 ==0):
+            if ((year % 4 == 0) and (not year%100 == 0)) or (year%400 == 0):
+                print("year leap", year)
                 return True
             else:
+                #print("year not leap", year)
                 return False
         if not yr1 == yr2:
             whole_years = (yr2-yr1-1)
             days = whole_years*365
-            #leap_years = whole_years//4
-            #days += leap_years
             for i in range(yr1+1, yr2):
                 if isLeapYear(i):
                     days += 1
@@ -44,12 +44,14 @@ class Solution:
                 days += day_months[i]
                 if i == 2 and isLeapYear(yr2):
                     days += 1
-        print("after months", days)
+        print("after mon", days)
         if not m1 == m2 or not yr1 == yr2 or not d1 == d2:
             if not (m1 == m2 and yr1 == yr2):
+                if m1 == 2 and isLeapYear(yr1):
+                    days += 1
                 days += day_months[m1] - d1
                 days += d2
             else:
                 days += d2 - d1
-        print("after days", days)
+        print("after day", days)
         return days
