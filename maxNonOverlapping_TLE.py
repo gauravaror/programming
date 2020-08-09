@@ -12,7 +12,7 @@ class Solution:
             if cum-target in dic:
                 for it in dic[cum-target]:
                     if it+1 <= i:
-                        heappush(pos, (abs(i-it), it+1, i))
+                        heappush(pos, (i, it+1, i))
         output = []
         print(pos)
         while len(pos) > 0:
